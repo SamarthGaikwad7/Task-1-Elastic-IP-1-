@@ -23,7 +23,7 @@ pipeline {
                     string(credentialsId: 'aws-credentials', variable: 'AWS_ACCESS_KEY_ID'),
                     string(credentialsId: 'aws-credentials', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
-                    sh '''
+                    bat '''
                         cd Task 1(Elastic IP 1)
                         terraform init
                         terraform plan -out=tfplan
@@ -52,7 +52,7 @@ pipeline {
                     string(credentialsId: 'aws-credentials', variable: 'AWS_ACCESS_KEY_ID'),
                     string(credentialsId: 'aws-credentials', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
-                    sh '''
+                    bat '''
                         cd Task 1(Elastic IP 1)
                         terraform apply -auto-approve
                     '''
@@ -70,7 +70,7 @@ pipeline {
                     string(credentialsId: 'aws-credentials', variable: 'AWS_ACCESS_KEY_ID'),
                     string(credentialsId: 'aws-credentials', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
-                    sh '''
+                    bat '''
                         cd Task 1(Elastic IP 1)
                         terraform destroy -auto-approve
                     '''
