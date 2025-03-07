@@ -1,0 +1,10 @@
+region= "us-east-1"
+security_group_name="ec2_security_group"
+vpc_id = "vpc-0c6277fd984af5805"
+subnet_id = "subnet-06a4bc10e8f7f6540"
+cidr_blocks = ["0.0.0.0/0"]
+ami= "ami-0c614dee691cbbf37"
+instance_type = "t2.micro"
+key_name = "my-key"
+ec2_tags = "Terraform-EC2"
+eip_tags = "Terraform-EIP"
