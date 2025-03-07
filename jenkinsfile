@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     dir("Task 1(Elastic IP 1)") {
-                        git branch: 'main', credentialsId: 'aws-credentials', url: 'https://github.com/SamarthGaikwad7/Task-1-Elastic-IP-1-.git'
+                        git branch: 'main', credentialsId: 'git-credentials', url: 'https://github.com/SamarthGaikwad7/Task-1-Elastic-IP-1-.git'
                     }
                 }
             }
@@ -20,11 +20,10 @@ pipeline {
         stage('Plan') {
             steps {
                 withCredentials([
-                    string(credentialsId: 'aws-credentials', variable: 'AWS_ACCESS_KEY_ID'),
-                    string(credentialsId: 'aws-credentials', variable: 'AWS_SECRET_ACCESS_KEY')
+                    aws(credentialsId: 'aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     bat '''
-                        cd Task 1(Elastic IP 1)
+                        cd "Task 1(Elastic IP 1)"
                         terraform init
                         terraform plan -out=tfplan
                         terraform show -no-color tfplan > tfplan.txt
@@ -49,11 +48,10 @@ pipeline {
         stage('Apply') {
             steps {
                 withCredentials([
-                    string(credentialsId: 'aws-credentials', variable: 'AWS_ACCESS_KEY_ID'),
-                    string(credentialsId: 'aws-credentials', variable: 'AWS_SECRET_ACCESS_KEY')
+                    aws(credentialsId: 'aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     bat '''
-                        cd Task 1(Elastic IP 1)
+                        cd "Task 1(Elastic IP 1)"
                         terraform apply -auto-approve
                     '''
                 }
@@ -67,11 +65,10 @@ pipeline {
             steps {
                 input message: "Are you sure you want to destroy the infrastructure?", ok: "Yes, Destroy"
                 withCredentials([
-                    string(credentialsId: 'aws-credentials', variable: 'AWS_ACCESS_KEY_ID'),
-                    string(credentialsId: 'aws-credentials', variable: 'AWS_SECRET_ACCESS_KEY')
+                    aws(credentialsId: 'aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     bat '''
-                        cd Task 1(Elastic IP 1)
+                        cd "Task 1(Elastic IP 1)"
                         terraform destroy -auto-approve
                     '''
                 }
