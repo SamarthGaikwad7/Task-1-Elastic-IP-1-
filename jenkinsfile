@@ -7,7 +7,9 @@ pipeline {
     }
 
     environment {
-        AWS_DEFAULT_REGION = 'us-east-1'
+        AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        AWS_DEFAULT_REGION    = 'us-east-1'
     }
 
     stages {
@@ -18,20 +20,15 @@ pipeline {
         }
         stage('Terraform Init') {
             steps {
-                withCredentials([
-                    string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
-                    string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
-                ]) {
-                    bat 'terraform init'
-                }
+                bat 'terraform init'
             }
         }
-        stage('Terraform Plan') {
+        stage('Terraform Plan') {  // Renamed stage
             steps {
                 bat 'terraform plan -var="domain=example.com" -out=tfplan'
             }
         }
-        stage('Plan Output') {
+        stage('Plan Output') {  // Renamed stage
             steps {
                 bat 'terraform show -no-color tfplan > tfplan.txt'
             }
@@ -39,21 +36,17 @@ pipeline {
         stage('Apply / Destroy') {
             steps {
                 script {
-                    try {
-                        if (params.action == 'apply') {
-                            if (!params.autoApprove) {
-                                def plan = readFile 'tfplan.txt'
-                                input message: "Do you want to apply the plan?",
-                                parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-                            }
-                            bat params.autoApprove ? "terraform apply -input=false --auto-approve tfplan" : "terraform apply -input=false tfplan"
-                        } else if (params.action == 'destroy') {
-                            bat 'terraform destroy --auto-approve'
-                        } else {
-                            error "Invalid action selected. Please choose either 'apply' or 'destroy'."
+                    if (params.action == 'apply') {
+                        if (!params.autoApprove) {
+                            def plan = readFile 'tfplan.txt'
+                            input message: "Do you want to apply the plan?",
+                            parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                         }
-                    } catch (Exception e) {
-                        error "Error during execution: ${e.getMessage()}"
+                        bat params.autoApprove ? "terraform apply -input=false --auto-approve tfplan" : "terraform apply -input=false tfplan"
+                    } else if (params.action == 'destroy') {
+                        bat 'terraform destroy --auto-approve'
+                    } else {
+                        error "Invalid action selected. Please choose either 'apply' or 'destroy'."
                     }
                 }
             }
