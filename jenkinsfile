@@ -25,6 +25,11 @@ pipeline {
         }
         stage('Plan') {
             steps {
+        bat 'terraform plan -var="domain=example.com" -out=tfplan'
+    }
+}
+        stage('Plan') {
+            steps {
                 bat 'terraform plan -out=tfplan'
                 bat 'terraform show -no-color tfplan > tfplan.txt'
             }
