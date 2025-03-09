@@ -33,11 +33,7 @@ pipeline {
                 bat 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
-        stage('Terraform Apply') {
-    steps {
-        bat 'terraform apply -auto-approve tfplan'
-    }
-}
+        
         stage('Apply / Destroy') {
             steps {
                 script {
