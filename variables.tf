@@ -15,12 +15,12 @@ variable "cidr_blocks" {
 }
 variable "ami" {
     description = "Amazon Machine Image ID"
-    default = "ami-0c614dee691cbbf37"
+    default = "ami-08b5b3a93ed654d19"
   
 }
 variable "vpc_id" {
   description = "The VPC ID where resources will be created"
-  default = "vpc-0c6277fd984af5805"
+  default = "vpc-03acbcafef5e41f43"
 }
 
 variable "subnet_id" {
