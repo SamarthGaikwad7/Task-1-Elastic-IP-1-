@@ -49,6 +49,7 @@ variable "ec2_tags" {
 variable "domain" {
   description = "Domain of an Elastic IP"
   type        = string
+  default     ="example.com"
 }
 
 variable "eip_tags" {
