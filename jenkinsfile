@@ -28,12 +28,11 @@ pipeline {
                 bat 'terraform plan -var="domain=example.com" -out=tfplan'
             }
         }
-        stage('Plan Output') {  // Renamed stage
-            steps {
-                bat 'terraform show -no-color tfplan > tfplan.txt'
-            }
-        }
-        
+        stage('Terraform Apply') {
+    steps {
+        bat 'terraform apply -auto-approve tfplan'
+    }
+}
         stage('Apply / Destroy') {
             steps {
                 script {
