@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/SamarthGaikwad7/terraform-ec2-modules.git'
+                git branch: 'main', url: 'https://github.com/SamarthGaikwad7/Task-1-Elastic-IP-1-.git'
             }
         }
         stage('Terraform init') {
