@@ -18,19 +18,18 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/SamarthGaikwad7/Task-1-Elastic-IP-1-.git'
             }
         }
-        stage('Terraform init') {
+        stage('Terraform Init') {
             steps {
                 bat 'terraform init'
             }
         }
-        stage('Plan') {
+        stage('Terraform Plan') {  // Renamed stage
             steps {
-        bat 'terraform plan -var="domain=example.com" -out=tfplan'
-    }
-}
-        stage('Plan') {
+                bat 'terraform plan -var="domain=example.com" -out=tfplan'
+            }
+        }
+        stage('Plan Output') {  // Renamed stage
             steps {
-                bat 'terraform plan -out=tfplan'
                 bat 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
